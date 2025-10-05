@@ -5,7 +5,8 @@ kind: Kustomization
 # Add new applications here as they are created
 
 resources:
-  - nginx
-  # - webapp  # Example for future apps
-  # - api
-  # - frontend
+  - ingress    # Multi-service ingress routing
+  - nginx      # Web server service
+  # - api        # Example API microservice
+  # - frontend  # Example for future apps
+  # - db-admin  # Example for future apps

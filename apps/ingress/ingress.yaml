@@ -1,0 +1,51 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: homelab-ingress
+  namespace: default
+  annotations:
+    # Multi-service path routing
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    # Preserve original headers for Cloudflare
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      more_set_headers "X-Forwarded-Proto: https";
+      more_set_headers "X-Forwarded-For: $proxy_add_x_forwarded_for";
+spec:
+  rules:
+    - http:  # No host specified - works with any domain via Cloudflare Tunnel
+        paths:
+          # Nginx service
+          - path: /nginx(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: nginx
+                port:
+                  number: 80
+          
+          # # API service (example)
+          # - path: /api(/|$)(.*)
+          #   pathType: ImplementationSpecific
+          #   backend:
+          #     service:
+          #       name: api-service
+          #       port:
+          #         number: 8080
+          
+          # # Frontend service (example)
+          # - path: /app(/|$)(.*)
+          #   pathType: ImplementationSpecific
+          #   backend:
+          #     service:
+          #       name: frontend-service
+          #       port:
+          #         number: 3000
+          
+          # # Database admin (example)
+          # - path: /admin(/|$)(.*)
+          #   backend:
+          #     service:
+          #       name: db-admin-service
+          #       port:
+          #         number: 8081
