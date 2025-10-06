@@ -27,6 +27,7 @@ spec:
           value: "true"
         args:
         - --log-level=info
+        - --insecure
         - --insecure-no-authentication-user=admin
         resources:
           limits:
