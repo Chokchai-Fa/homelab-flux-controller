@@ -1,0 +1,80 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: weave-gitops
+  namespace: flux-system
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: weave-gitops
+      version: "4.0.36"
+      sourceRef:
+        kind: HelmRepository
+        name: weave-gitops
+        namespace: flux-system
+      interval: 1m
+  values:
+    # Basic configuration for Weave GitOps
+    replicaCount: 1
+    
+    # Resources
+    resources:
+      limits:
+        cpu: 1000m
+        memory: 1Gi
+      requests:
+        cpu: 100m
+        memory: 64Mi
+    
+    # Security context
+    securityContext:
+      capabilities:
+        drop:
+        - ALL
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      runAsUser: 1000
+    
+    # Service configuration
+    service:
+      type: ClusterIP
+      port: 9001
+    
+    # Ingress (disabled by default, can be enabled later)
+    ingress:
+      enabled: false
+      className: ""
+      annotations: {}
+      hosts:
+        - host: gitops.local
+          paths:
+            - path: /
+              pathType: Prefix
+      tls: []
+    
+    # RBAC
+    rbac:
+      create: true
+      impersonationResourceNames: ["admin"]
+    
+    # ServiceAccount
+    serviceAccount:
+      create: true
+      annotations: {}
+      name: ""
+    
+    # Additional configuration
+    logLevel: info
+    
+    # Admin user (password should be configured via secret)
+    adminUser:
+      create: true
+      username: admin
+      # passwordHash should be set via a secret or encrypted values
+      # Generate with: echo -n "your-password" | bcrypt-tool or htpasswd -bnBC 12 "" your-password | tr -d ':\n'
+      passwordHash: "$2a$12$P/tHQ1DNFXdvX0zRGA8LPeJ4w.BX1efjXEWw4J4WyXr8U4e6Y6PoS"
+    
+    # Notification configuration (optional)
+    # notifications:
+    #   enabled: false

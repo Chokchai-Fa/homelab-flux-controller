@@ -5,3 +5,4 @@ namespace: default
 
 resources:
   - ingress.yaml
+  - weave-gitops-proxy.yaml

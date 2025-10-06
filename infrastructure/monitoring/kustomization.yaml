@@ -2,12 +2,12 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 # Monitoring and observability components
-# Currently empty - add monitoring tools here when needed
 
-# Future monitoring components:
-# - weave-gitops  # GitOps dashboard for Flux CD
+# GitOps dashboard and monitoring tools:
+# - weave-gitops  # GitOps dashboard for Flux CD - DEPLOYED
 # - prometheus    # Metrics collection
 # - grafana       # Dashboards and visualization  
 # - loki          # Log aggregation
 
-resources: []
+resources:
+  - weave-gitops  # GitOps dashboard for Flux CD
