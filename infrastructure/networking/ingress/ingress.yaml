@@ -24,15 +24,6 @@ spec:
                 port:
                   number: 80
           
-          # Weave GitOps Dashboard (cross-namespace service reference)
-          - path: /weaver-gitops(/|$)(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: weave-gitops
-                port:
-                  number: 9001
-          
           # # API service (example)
           # - path: /api(/|$)(.*)
           #   pathType: ImplementationSpecific

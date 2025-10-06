@@ -41,15 +41,15 @@ spec:
       type: ClusterIP
       port: 9001
     
-    # Ingress (disabled by default, can be enabled later)
+    # Ingress configuration - enable and configure properly
     ingress:
-      enabled: false
-      className: ""
-      annotations: {}
+      enabled: true
+      className: "nginx"
+      annotations: {}  # Remove rewrite rules since app handles subpath internally
       hosts:
-        - host: gitops.local
+        - host: ""  # Empty host works with any domain
           paths:
-            - path: /
+            - path: /weaver-gitops
               pathType: Prefix
       tls: []
     
@@ -66,6 +66,10 @@ spec:
     
     # Additional configuration
     logLevel: info
+    
+    # Configure Weave GitOps to run on subpath
+    additionalArgs:
+      - --route-prefix=/weaver-gitops
     
     # Admin user (password should be configured via secret)
     adminUser:
