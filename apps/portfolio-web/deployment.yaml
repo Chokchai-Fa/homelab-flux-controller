@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: portfolio-web
-        image: chokchaifa/chokchai-portfolio:20251006-081723-sha-e908bc3 # {"$imagepolicy": "flux-system:portfolio-web"}
+        image: chokchaifa/chokchai-portfolio:v1.0.11-5c810ef # {"$imagepolicy": "flux-system:portfolio-web"}
         ports:
         - containerPort: 3000
           name: http
@@ -36,13 +36,13 @@ spec:
             memory: 128Mi
         livenessProbe:
           httpGet:
-            path: /
+            path: /portfolio
             port: 3000
           initialDelaySeconds: 30
           periodSeconds: 10
         readinessProbe:
           httpGet:
-            path: /
+            path: /portfolio
             port: 3000
           initialDelaySeconds: 5
           periodSeconds: 5
