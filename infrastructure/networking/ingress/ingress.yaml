@@ -15,6 +15,15 @@ spec:
   rules:
     - http:  # No host specified - works with any domain via Cloudflare Tunnel
         paths:
+          # Weaver GitOps dashboard
+          - path: /cluster/admin(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: weave-gitops
+                port:
+                  number: 9001
+          
           # Nginx service
           - path: /nginx(/|$)(.*)
             pathType: ImplementationSpecific
