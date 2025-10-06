@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Infrastructure components
+# Deploy platform-level resources before applications
+
+resources:
+  - networking    # Ingress controllers, network policies
+  # - controllers # Future: cert-manager, external-dns
+  # - monitoring  # Future: prometheus, grafana
+  # - security    # Future: RBAC, network policies
