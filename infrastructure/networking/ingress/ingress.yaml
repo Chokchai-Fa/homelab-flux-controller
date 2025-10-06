@@ -25,7 +25,7 @@ spec:
                   number: 80
           
           # Weave GitOps Dashboard (cross-namespace service reference)
-          - path: /cluster/admin(/|$)(.*)
+          - path: /weaver-gitops(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
               service:
