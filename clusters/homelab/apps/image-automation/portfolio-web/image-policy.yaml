@@ -1,4 +1,4 @@
-apiVersion: image.toolkit.fluxcd.io/v1
+apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImagePolicy
 metadata:
   name: portfolio-web
@@ -7,4 +7,7 @@ spec:
   imageRepositoryRef:
     name: portfolio-web
   filterTags:
-    pattern: '^[0-9]{8}-[0-9]{6}-sha-[a-f0-9]{7}$'
+    pattern: '^v[0-9]+\.[0-9]+\.[0-9]+.*$'
+  policy:
+    semver:
+      range: '>=0.0.0-0'
