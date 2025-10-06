@@ -5,4 +5,4 @@ namespace: default
 
 resources:
   - ingress.yaml
-  - weave-gitops-proxy.yaml  # Proxy service for cross-namespace access
+  - weave-gitops-ingress.yaml

@@ -24,15 +24,6 @@ spec:
                 port:
                   number: 80
           
-          # Weave GitOps - Cluster management dashboard
-          - path: /cluster/admin(/|$)(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: weave-gitops-proxy
-                port:
-                  number: 9001
-          
           # # API service (example)
           # - path: /api(/|$)(.*)
           #   pathType: ImplementationSpecific
