@@ -6,9 +6,8 @@ metadata:
 spec:
   imageRepositoryRef:
     name: portfolio-web
-  policy:
-    semver:
-      range: ">=1.0.0"
   filterTags:
-    pattern: '^sha-[a-f0-9]+'
-    extract: '$0'
+    pattern: '^sha-[a-f0-9]{7}$'
+  policy:
+    alphabetical:
+      order: desc

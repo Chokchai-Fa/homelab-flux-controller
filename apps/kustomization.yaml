@@ -5,8 +5,8 @@ kind: Kustomization
 # Infrastructure components are deployed separately
 
 resources:
-  - nginx      # Web server service
-  - portfolio  # Next.js portfolio application
+  - nginx          # Web server service
+  - portfolio-web  # Next.js portfolio application
   # - api        # Example API microservice
   # - frontend  # Example for future apps
   # - db-admin  # Example for future apps
