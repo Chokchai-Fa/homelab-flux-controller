@@ -7,7 +7,7 @@ spec:
   imageRepositoryRef:
     name: portfolio-web
   filterTags:
-    pattern: '^sha-[a-f0-9]{7}$'
+    pattern: '^[0-9]{8}-[0-9]{6}-sha-[a-f0-9]{7}$'
   policy:
     alphabetical:
       order: desc
