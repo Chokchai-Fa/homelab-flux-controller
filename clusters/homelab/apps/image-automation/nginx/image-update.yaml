@@ -17,13 +17,22 @@ spec:
         email: fluxcdbot@users.noreply.github.com
         name: fluxcdbot
       messageTemplate: |
-        Automated image update and reconciler for nginx
+        Automated image update for nginx
         
         Automation name: {{ .AutomationObject }}
-        
-        Changes:
-        {{ range .Changed -}}
-        - {{ . }}
+
+        Files:
+        {{ range $filename, $_ := .Changed.FileChanges -}}
+        - {{ $filename }}
+        {{ end -}}
+
+        Objects:
+        {{ range $resource, $changes := .Changed.Objects -}}
+        - {{ $resource.Kind }} {{ $resource.Name }}
+          Changes:
+        {{- range $_, $change := $changes }}
+            - {{ $change.OldValue }} -> {{ $change.NewValue }}
+        {{ end -}}
         {{ end -}}
     push:
       branch: main
