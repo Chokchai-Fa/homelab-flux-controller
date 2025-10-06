@@ -40,11 +40,13 @@ spec:
           httpGet:
             path: /
             port: 9001
-          initialDelaySeconds: 30
-          periodSeconds: 10
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 10
         readinessProbe:
           httpGet:
             path: /
             port: 9001
-          initialDelaySeconds: 5
-          periodSeconds: 5
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
