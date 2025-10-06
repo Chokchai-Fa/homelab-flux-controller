@@ -24,6 +24,15 @@ spec:
                 port:
                   number: 80
           
+          # Portfolio Next.js App
+          - path: /portfolio(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: portfolio-web
+                port:
+                  number: 3000
+          
           # # API service (example)
           # - path: /api(/|$)(.*)
           #   pathType: ImplementationSpecific
