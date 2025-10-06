@@ -2,17 +2,14 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps
+  name: image-automation
   namespace: flux-system
 spec:
-  interval: 5m
+  interval: 30m
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./apps
+  path: ./clusters/homelab/apps/image-automation
   prune: true
   wait: true
-  timeout: 5m
-  dependsOn:
-    - name: infrastructure
-    - name: image-automation
+  timeout: 10m

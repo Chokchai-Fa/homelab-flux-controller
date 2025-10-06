@@ -8,6 +8,3 @@ resources:
   # Kubernetes manifests
   - deployment.yaml
   - service.yaml
-  
-  # Image automation
-  - image-automation
