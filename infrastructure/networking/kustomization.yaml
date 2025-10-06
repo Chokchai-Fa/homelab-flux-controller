@@ -3,4 +3,3 @@ kind: Kustomization
 
 resources:
   - ingress       # Main ingress (default namespace)
-  - weave-gitops  # Weave GitOps ingress (flux-system namespace)
