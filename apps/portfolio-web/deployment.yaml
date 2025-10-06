@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: portfolio-web
-        image: chokchaifa/chokchai-portfolio:v1.0.12-d0f3bd0 # {"$imagepolicy": "flux-system:portfolio-web"}
+        image: chokchaifa/chokchai-portfolio:v1.0.13-e412975 # {"$imagepolicy": "flux-system:portfolio-web"}
         ports:
         - containerPort: 3000
           name: http
