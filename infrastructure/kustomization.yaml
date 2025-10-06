@@ -6,6 +6,6 @@ kind: Kustomization
 
 resources:
   - networking    # Ingress controllers, network policies
+  - monitoring    # GitOps dashboard, metrics, observability
   # - controllers # Future: cert-manager, external-dns
-  # - monitoring  # Future: prometheus, grafana
   # - security    # Future: RBAC, network policies

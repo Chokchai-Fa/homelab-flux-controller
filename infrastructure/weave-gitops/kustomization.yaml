@@ -1,8 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+# Weave GitOps - GitOps Dashboard for Flux CD
 namespace: default
 
 resources:
-  - ingress.yaml
-  - weave-gitops-proxy.yaml  # Proxy service for cross-namespace access
+  - deployment.yaml
+  - service.yaml
