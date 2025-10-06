@@ -1,10 +1,37 @@
+---
+# Portfolio App Ingress - preserve full path (with basePath in Next.js)
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: homelab-ingress
+  name: portfolio-ingress
   namespace: default
   annotations:
-    # Multi-service path routing
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    # Preserve original headers for Cloudflare
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      more_set_headers "X-Forwarded-Proto: https";
+      more_set_headers "X-Forwarded-For: $proxy_add_x_forwarded_for";
+spec:
+  rules:
+    - http:
+        paths:
+          # Portfolio Next.js App - preserve full path including /portfolio
+          - path: /portfolio(/.*)?
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: portfolio-web
+                port:
+                  number: 3000
+
+---
+# Nginx Ingress - with rewrite
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  namespace: default
+  annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
     nginx.ingress.kubernetes.io/use-regex: "true"
     # Preserve original headers for Cloudflare
@@ -13,9 +40,9 @@ metadata:
       more_set_headers "X-Forwarded-For: $proxy_add_x_forwarded_for";
 spec:
   rules:
-    - http:  # No host specified - works with any domain via Cloudflare Tunnel
+    - http:
         paths:
-          # Nginx service
+          # Nginx service with rewrite
           - path: /nginx(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
@@ -23,15 +50,6 @@ spec:
                 name: nginx
                 port:
                   number: 80
-          
-          # Portfolio Next.js App
-          - path: /portfolio(/|$)(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: portfolio-web
-                port:
-                  number: 3000
           
           # # API service (example)
           # - path: /api(/|$)(.*)
