@@ -6,4 +6,4 @@ namespace: flux-system
 resources:
   - helmrepository.yaml
   - helmrelease.yaml
-  # - ingress.yaml  # Disabled - using main homelab ingress instead
+  

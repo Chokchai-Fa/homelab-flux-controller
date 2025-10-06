@@ -77,7 +77,7 @@ spec:
       username: admin
       # passwordHash should be set via a secret or encrypted values
       # Generate with: echo -n "your-password" | bcrypt-tool or htpasswd -bnBC 12 "" your-password | tr -d ':\n'
-      passwordHash: "$2a$12$P/tHQ1DNFXdvX0zRGA8LPeJ4w.BX1efjXEWw4J4WyXr8U4e6Y6PoS"
+      passwordHash: "$2y$12$XVS.VFfwRXotwLTXewSjFeeZ40Z/YiLOwW3sN34kY7XTn2PHd7edG"
     
     # Notification configuration (optional)
     # notifications:
