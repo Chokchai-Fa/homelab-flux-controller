@@ -47,7 +47,7 @@ spec:
       className: "nginx"
       annotations: {}  # Remove rewrite rules since app handles subpath internally
       hosts:
-        - host: ""  # Empty host works with any domain
+        - host: ""
           paths:
             - path: /weaver-gitops
               pathType: Prefix
