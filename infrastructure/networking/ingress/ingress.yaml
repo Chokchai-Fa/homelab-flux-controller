@@ -6,8 +6,8 @@ metadata:
   name: portfolio-assets-ingress
   namespace: default
   annotations:
-  nginx.ingress.kubernetes.io/rewrite-target: /_next/$1
-  nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /_next/$1
+    nginx.ingress.kubernetes.io/use-regex: "true"
     # Preserve original headers for Cloudflare
     nginx.ingress.kubernetes.io/configuration-snippet: |
       more_set_headers "X-Forwarded-Proto: https";
@@ -18,7 +18,7 @@ spec:
         paths:
           # Catch Next.js runtime/static/image requests under the /portfolio prefix and strip that prefix
           - path: /portfolio/_next/(.*)
-            pathType: ImplementationSpecific
+            pathType: Prefix
             backend:
               service:
                 name: portfolio-web
@@ -42,9 +42,9 @@ spec:
   rules:
     - http:
         paths:
-          # Portfolio Next.js App - strip /portfolio and rewrite to /portfolio
+          # Portfolio Next.js App - forward full path; Next.js handles basePath
           - path: /portfolio(/|$)(.*)
-            pathType: ImplementationSpecific
+            pathType: Prefix
             backend:
               service:
                 name: portfolio-web
@@ -71,7 +71,7 @@ spec:
         paths:
           # Nginx service with rewrite
           - path: /nginx(/|$)(.*)
-            pathType: ImplementationSpecific
+            pathType: Prefix
             backend:
               service:
                 name: nginx
