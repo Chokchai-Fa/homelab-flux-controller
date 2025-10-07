@@ -1,11 +1,12 @@
 ---
-# Portfolio App Ingress - preserve full path (with basePath in Next.js)
+# Portfolio App Ingress - rewrite to strip /portfolio prefix
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: portfolio-ingress
   namespace: default
   annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /portfolio$2
     nginx.ingress.kubernetes.io/use-regex: "true"
     # Preserve original headers for Cloudflare
     nginx.ingress.kubernetes.io/configuration-snippet: |
@@ -15,8 +16,8 @@ spec:
   rules:
     - http:
         paths:
-          # Portfolio Next.js App - preserve full path including /portfolio
-          - path: /portfolio(/.*)?
+          # Portfolio Next.js App - strip /portfolio and rewrite to /portfolio
+          - path: /portfolio(/|$)(.*)
             pathType: ImplementationSpecific
             backend:
               service:
