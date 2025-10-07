@@ -1,12 +1,11 @@
 ---
-# Portfolio Assets Ingress - rewrite /portfolio/_next/* -> /_next/* so static assets and image optimizer resolve
+# Portfolio Assets Ingress - forward /portfolio/_next/* as-is to Next.js (no rewrite needed)
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: portfolio-assets-ingress
   namespace: default
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /_next/$2
     nginx.ingress.kubernetes.io/use-regex: "true"
     # Preserve original headers for Cloudflare
     nginx.ingress.kubernetes.io/configuration-snippet: |
@@ -16,9 +15,9 @@ spec:
   rules:
     - http:
         paths:
-          # Catch Next.js runtime/static/image requests under the /portfolio prefix and strip that prefix
-          - path: /portfolio/_next(/|$)(.*)
-            pathType: ImplementationSpecific
+          # Forward Next.js assets with basePath intact - Next.js handles basePath internally
+          - path: /portfolio/_next
+            pathType: Prefix
             backend:
               service:
                 name: portfolio-web
