@@ -13,7 +13,6 @@ metadata:
       more_set_headers "X-Forwarded-For: $proxy_add_x_forwarded_for";
 spec:
   rules:
-    - host: portfolio.chokchai-dev.xyz
     - http:
         paths:
           # Forward Next.js assets with basePath intact - Next.js handles basePath internally
@@ -40,7 +39,6 @@ metadata:
       more_set_headers "X-Forwarded-For: $proxy_add_x_forwarded_for";
 spec:
   rules:
-    - host: portfolio.chokchai-dev.xyz
     - http:
         paths:
           # Portfolio Next.js App - forward full path; Next.js handles basePath
@@ -68,7 +66,6 @@ metadata:
       more_set_headers "X-Forwarded-For: $proxy_add_x_forwarded_for";
 spec:
   rules:
-    - host: nginx.chokchai-dev.xyz
     - http:
         paths:
           # Nginx service with rewrite
