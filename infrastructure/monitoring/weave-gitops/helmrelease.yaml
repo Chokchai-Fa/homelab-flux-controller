@@ -50,7 +50,7 @@ spec:
       hosts:
         - host: ""
           paths:
-            - path: /weaver-gitops
+            - path: /
               pathType: Prefix
       tls: []
     
@@ -67,10 +67,6 @@ spec:
     
     # Additional configuration
     logLevel: info
-    
-    # Configure Weave GitOps to run on subpath
-    additionalArgs:
-      - --route-prefix=/weaver-gitops
     
     # Admin user (password should be configured via secret)
     adminUser:
