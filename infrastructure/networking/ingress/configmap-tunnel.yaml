@@ -5,7 +5,6 @@ metadata:
   namespace: ingress
 data:
   tunnel-config.yml: |
-    # Cloudflare Tunnel Configuration - managed by GitOps
     # Note: credentials-file is mounted from host filesystem via hostPath volume
     tunnel: 1
     credentials-file: /etc/cloudflared/credentials.json
