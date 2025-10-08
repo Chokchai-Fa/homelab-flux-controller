@@ -43,16 +43,16 @@ spec:
       nodePort: 30090
     
     # Ingress configuration - enable and configure properly
-    ingress:
-      enabled: true
-      className: "nginx"
-      annotations: {}  # Remove rewrite rules since app handles subpath internally
-      hosts:
-        - host: ""
-          paths:
-            - path: /
-              pathType: Prefix
-      tls: []
+    # ingress:
+    #   enabled: true
+    #   className: "nginx"
+    #   annotations: {}  # Remove rewrite rules since app handles subpath internally
+    #   hosts:
+    #     - host: ""
+    #       paths:
+    #         - path: /
+    #           pathType: Prefix
+    #   tls: []
     
     # RBAC
     rbac:
