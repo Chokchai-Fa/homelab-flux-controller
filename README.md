@@ -116,19 +116,30 @@ spec:
     - name: image-automation
 ```
 
-### **6. Centralized Ingress Routing**
-The ingress configuration routes traffic to all services:
+### **6. Centralized Ingress Routing (Cloudflare Tunnel)**
+Ingress in this repository is now managed by a GitOps-controlled Cloudflare Tunnel workload. The tunnel maps external hostnames to in-cluster services using internal DNS (ClusterIP). This removes the need to expose NodePorts on the cluster nodes.
 
-**File**: `infrastructure/networking/ingress/ingress.yaml`
+Manifests:
+
+- `infrastructure/networking/cloudflared/kustomization.yaml` — Kustomization for the Cloudflare Tunnel
+- `infrastructure/networking/cloudflared/deployment.yaml` — `cloudflared` Deployment
+- `infrastructure/networking/cloudflared/configmap-tunnel.yaml` — Tunnel ingress rules / hostnames
+
+Notes:
+
+- The ConfigMap contains `tunnel-config.yml` which is the source-of-truth for hostname → service mappings.
+- By default the container mounts the credentials file from the node (hostPath) into `/etc/cloudflared/credentials.json`. You can instead use a sealed/encrypted Secret (SealedSecrets or SOPS) for better security.
+- Update `configmap-tunnel.yaml` to change mappings, then commit to Git; Flux will apply the change.
+
+Example mapping in `configmap-tunnel.yaml`:
+
 ```yaml
-spec:
-  rules:
-    - http:
-        paths:
-          - path: /nginx(/|$)(.*)    # Routes /nginx to nginx service
-            backend:
-              service:
-                name: nginx
+ingress:
+  - hostname: portfolio.chokchai-dev.xyz
+    service: http://portfolio-web.default.svc.cluster.local:3000
+  - hostname: weaver-gitops.chokchai-dev.xyz
+    service: http://weave-gitops.flux-system.svc.cluster.local:9001
+  - service: http_status:404
 ```
 
 ## 🔄 Image Automation
