@@ -7,11 +7,11 @@ metadata:
     app: portfolio-web
 spec:
   type: NodePort
+  selector:
+    app: portfolio-web
   ports:
   - port: 3000
     targetPort: 3000
     protocol: TCP
     name: http
   nodePort: 30300
-  selector:
-    app: portfolio-web
