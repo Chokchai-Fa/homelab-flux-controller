@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: cloudflared-config
-  namespace: cloudflared
+  namespace: ingress
 data:
   tunnel-config.yml: |
     # Cloudflare Tunnel Configuration - managed by GitOps
