@@ -14,4 +14,4 @@ spec:
     targetPort: 3000
     protocol: TCP
     name: http
-  nodePort: 30300
+    nodePort: 30300
