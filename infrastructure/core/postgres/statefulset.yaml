@@ -50,5 +50,4 @@ spec:
         resources:
           requests:
             storage: 5Gi
-        # Assumption: cluster has a StorageClass named "standard". Change if needed.
-        storageClassName: standard
+        storageClassName: local-path
