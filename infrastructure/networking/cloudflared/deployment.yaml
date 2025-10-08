@@ -20,11 +20,12 @@ spec:
           image: cloudflare/cloudflared:2024.4.0
           args:
             - tunnel
-            - run
             - --config
             - /etc/cloudflared/tunnel-config.yml
             - --credentials-file
             - /etc/cloudflared/credentials.json
+            - run
+            - "8df3c19b-430d-47d3-8e84-c671e006149a"
           volumeMounts:
             - name: config
               mountPath: /etc/cloudflared/tunnel-config.yml
