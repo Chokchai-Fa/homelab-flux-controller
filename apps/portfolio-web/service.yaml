@@ -6,11 +6,12 @@ metadata:
   labels:
     app: portfolio-web
 spec:
-  type: ClusterIP
+  type: NodePort
   ports:
   - port: 3000
     targetPort: 3000
     protocol: TCP
     name: http
+  nodePort: 30300
   selector:
     app: portfolio-web

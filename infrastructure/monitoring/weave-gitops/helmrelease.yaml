@@ -38,8 +38,9 @@ spec:
     
     # Service configuration
     service:
-      type: ClusterIP
+      type: NodePort
       port: 9001
+      nodePort: 30090
     
     # Ingress configuration - enable and configure properly
     ingress:
