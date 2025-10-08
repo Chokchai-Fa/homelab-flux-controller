@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloudflared-config
+  namespace: cloudflared
+data:
+  tunnel-config.yml: |
+    # Cloudflare Tunnel Configuration - managed by GitOps
+    # Note: credentials-file is mounted from host filesystem via hostPath volume
+    tunnel: 1
+    credentials-file: /etc/cloudflared/credentials.json
+
+    ingress:
+      - hostname: portfolio.chokchai-dev.xyz
+        # Routes to portfolio-web service in default namespace
+        service: http://portfolio-web.default.svc.cluster.local:3000
+
+      - hostname: weaver-gitops.chokchai-dev.xyz
+        # Routes to weave-gitops service in flux-system namespace
+        service: http://weave-gitops.flux-system.svc.cluster.local:9001
+
+      # Catch-all for any other requests
+      - service: http_status:404
