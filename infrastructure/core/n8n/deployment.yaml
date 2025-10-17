@@ -62,8 +62,6 @@ spec:
               value: "n8n.chokchai-dev.xyz"
             - name: WEBHOOK_URL
               value: "https://n8n.chokchai-dev.xyz/"
-            - name: N8N_EDITOR_BASE_URL
-              value: "https://n8n.chokchai-dev.xyz/"
           livenessProbe:
             httpGet:
               path: /healthz
