@@ -29,6 +29,8 @@ spec:
               value: "postgres"
             - name: DB_POSTGRESDB_PORT
               value: "5432"
+            - name: DB_POSTGRESDB_SCHEMA
+              value: "n8n"
             - name: DB_POSTGRESDB_DATABASE
               valueFrom:
                 secretKeyRef:
