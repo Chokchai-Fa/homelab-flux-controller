@@ -49,12 +49,12 @@ spec:
             - name: N8N_BASIC_AUTH_USER
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secret
+                  name: n8n-secret
                   key: N8N_BASIC_AUTH_USER
             - name: N8N_BASIC_AUTH_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secret
+                  name: n8n-secret
                   key: N8N_BASIC_AUTH_PASSWORD
           livenessProbe:
             httpGet:
