@@ -18,5 +18,9 @@ data:
         # Routes to weave-gitops service in flux-system namespace
         service: http://weave-gitops.flux-system.svc.cluster.local:9001
 
+      - hostname: n8n.chokchai-dev.xyz
+        # Routes to n8n service in core namespace
+        service: http://n8n.core.svc.cluster.local:5678
+
       # Catch-all for any other requests
       - service: http_status:404
