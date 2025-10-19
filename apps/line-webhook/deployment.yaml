@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: line-webhook
+  namespace: default
+  labels:
+    app: line-webhook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: line-webhook
+  template:
+    metadata:
+      labels:
+        app: line-webhook
+    spec:
+      containers:
+      - name: line-webhook
+        image: chokchaifa/line-webhook:v1.0.7-ba08176 # {"$imagepolicy": "flux-system:line-webhook"}
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        env:
+        - name: LINE_CHANNEL_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: line-webhook-secret
+              key: LINE_CHANNEL_SECRET
+        - name: LINE_CHANNEL_ACCESS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: line-webhook-secret
+              key: LINE_CHANNEL_ACCESS_TOKEN
+        resources:
+          limits:
+            cpu: 300m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 20
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      restartPolicy: Always

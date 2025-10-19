@@ -22,5 +22,9 @@ data:
         # Routes to n8n service in core namespace
         service: http://n8n.core.svc.cluster.local:5678
 
+      - hostname: line-webhook.chokchai-dev.xyz
+        # Routes to line-webhook service in default namespace
+        service: http://line-webhook.default.svc.cluster.local:8080
+
       # Catch-all for any other requests
       - service: http_status:404
