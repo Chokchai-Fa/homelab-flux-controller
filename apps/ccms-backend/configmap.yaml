@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ccms-backend-config
+  namespace: default
+  labels:
+    app: ccms-backend
+data:
+  NODE_ENV: "production"
+  PORT: "8080"
+  HOST: "0.0.0.0"
+  CORS_ORIGIN: "http://localhost:8080"
+  COMMON_RATE_LIMIT_WINDOW_MS: "1000"
+  COMMON_RATE_LIMIT_MAX_REQUESTS: "20"

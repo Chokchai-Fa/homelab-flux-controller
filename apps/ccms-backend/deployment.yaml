@@ -22,11 +22,11 @@ spec:
         - containerPort: 8080
           name: http
           protocol: TCP
-        env:
-        - name: NODE_ENV
-          value: "production"
-        - name: PORT
-          value: "8080"
+        envFrom:
+        - configMapRef:
+            name: ccms-backend-config
+        - secretRef:
+            name: ccms-backend
         resources:
           limits:
             cpu: 500m
