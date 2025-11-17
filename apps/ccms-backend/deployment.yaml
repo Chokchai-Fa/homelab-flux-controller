@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ccms-backend
+  namespace: default
+  labels:
+    app: ccms-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ccms-backend
+  template:
+    metadata:
+      labels:
+        app: ccms-backend
+    spec:
+      containers:
+      - name: ccms-backend
+        image: chokchaifa/ccms-backend:v1.0.24-818186f # {"$imagepolicy": "flux-system:ccms-backend"}
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "8080"
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        livenessProbe:
+          httpGet:
+            path: /health-check
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health-check
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+      restartPolicy: Always
