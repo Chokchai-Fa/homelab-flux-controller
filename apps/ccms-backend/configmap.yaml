@@ -12,3 +12,4 @@ data:
   CORS_ORIGIN: "http://localhost:8080"
   COMMON_RATE_LIMIT_WINDOW_MS: "1000"
   COMMON_RATE_LIMIT_MAX_REQUESTS: "20"
+  APP_URL: "https://ccms-backend.chokchai-dev.xyz"
