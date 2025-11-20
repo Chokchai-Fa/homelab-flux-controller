@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: ccms-backend
-        image: chokchaifa/ccms-backend:v1.0.2-6be55e9 # {"$imagepolicy": "flux-system:ccms-backend"}
+        image: chokchaifa/ccms-backend:v1.0.7-d0bfe77 # {"$imagepolicy": "flux-system:ccms-backend"}
         ports:
         - containerPort: 8080
           name: http
