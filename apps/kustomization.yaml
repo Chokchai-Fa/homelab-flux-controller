@@ -7,7 +7,7 @@ kind: Kustomization
 resources:
   - portfolio-web  # Next.js portfolio application
   - line-webhook  # LINE webhook service
-  - ccms-backend # CCMS backend service
+  # - ccms-backend # CCMS backend service
   # - api        # Example API microservice
   # - frontend  # Example for future apps
   # - db-admin  # Example for future apps
