@@ -6,7 +6,9 @@ metadata:
   labels:
     app: n8n
 spec:
-  replicas: 1
+  # Disabled: n8n is not in use. Set to 1 to re-enable (requires the n8n-secret
+  # in the core namespace). Kept in Git so it can be turned back on easily.
+  replicas: 0
   selector:
     matchLabels:
       app: n8n

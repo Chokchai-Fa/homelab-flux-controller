@@ -18,10 +18,6 @@ data:
         # Routes to weave-gitops service in flux-system namespace
         service: http://weave-gitops.flux-system.svc.cluster.local:9001
 
-      - hostname: n8n.chokchai-dev.xyz
-        # Routes to n8n service in core namespace
-        service: http://n8n.core.svc.cluster.local:5678
-
       - hostname: line-webhook.chokchai-dev.xyz
         # Routes to line-webhook service in default namespace
         service: http://line-webhook.default.svc.cluster.local:8080
