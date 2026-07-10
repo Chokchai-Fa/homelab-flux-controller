@@ -4,4 +4,3 @@ kind: Kustomization
 resources:
   - portfolio-web
   - line-webhook
-  - ccms-backend

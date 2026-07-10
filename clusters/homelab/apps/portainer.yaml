@@ -11,7 +11,7 @@ spec:
     name: flux-system
   path: ./infrastructure/monitoring/portainer
   prune: true
-  # Same isolation as rancher.yaml: no wait:true, no dependsOn, so a slow or
-  # failing management-UI install never blocks business apps. Portainer is
-  # much lighter than Rancher (see helmrelease.yaml for why), but there's no
-  # reason to give it the ability to block `infrastructure`/`apps` either.
+  # Deliberately independent of `infrastructure`/`apps`: no wait:true, no
+  # dependsOn, so a slow or failing management-UI install never blocks
+  # business apps. Portainer is lightweight (see helmrelease.yaml), but
+  # there's no reason to give it the ability to block anything either.

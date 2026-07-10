@@ -22,14 +22,6 @@ data:
         # Routes to line-webhook service in default namespace
         service: http://line-webhook.default.svc.cluster.local:8080
 
-      - hostname: ccms-backend.chokchai-dev.xyz
-        # Routes to ccms-backend service in default namespace
-        service: http://ccms-backend.default.svc.cluster.local:8080
-
-      - hostname: rancher.chokchai-dev.xyz
-        # Routes to Rancher UI in cattle-system namespace (TLS terminated by Cloudflare)
-        service: http://rancher.cattle-system.svc.cluster.local:80
-
       - hostname: portainer.chokchai-dev.xyz
         # Routes to Portainer UI in portainer namespace (TLS terminated by Cloudflare)
         service: http://portainer.portainer.svc.cluster.local:9000

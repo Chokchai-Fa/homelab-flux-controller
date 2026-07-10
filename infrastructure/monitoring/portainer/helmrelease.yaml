@@ -6,9 +6,9 @@ metadata:
 spec:
   # Portainer was chosen over Rancher for this Pi specifically because it has
   # no equivalent of Rancher's first-boot catalog git-restore step (the thing
-  # that starved the SD card's I/O and crashed the whole cluster - see the
-  # rancher HelmRelease in this repo). It's a single lightweight binary with
-  # a small local database, so no special install-time care is needed here.
+  # that starved the SD card's I/O and crashed the whole cluster when Rancher
+  # was tried here). It's a single lightweight binary with a small local
+  # database, so no special install-time care is needed here.
   interval: 10m
   releaseName: portainer
   targetNamespace: portainer
