@@ -1,0 +1,53 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: portainer
+  namespace: flux-system
+spec:
+  # Portainer was chosen over Rancher for this Pi specifically because it has
+  # no equivalent of Rancher's first-boot catalog git-restore step (the thing
+  # that starved the SD card's I/O and crashed the whole cluster - see the
+  # rancher HelmRelease in this repo). It's a single lightweight binary with
+  # a small local database, so no special install-time care is needed here.
+  interval: 10m
+  releaseName: portainer
+  targetNamespace: portainer
+  storageNamespace: portainer
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  chart:
+    spec:
+      chart: portainer
+      version: ">=239.0.0"
+      sourceRef:
+        kind: HelmRepository
+        name: portainer
+        namespace: flux-system
+      interval: 1h
+  values:
+    # Cloudflare terminates TLS at the edge and routes to this ClusterIP
+    # service over plain HTTP, same pattern as every other app in this repo.
+    service:
+      type: ClusterIP
+      httpPort: 9000
+    ingress:
+      enabled: false
+
+    # Keep the footprint modest on the 3.7 GiB Raspberry Pi.
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        memory: 256Mi
+
+    # Small local BoltDB for Portainer's own state (not container data).
+    persistence:
+      enabled: true
+      size: "2Gi"
+      storageClass: local-path

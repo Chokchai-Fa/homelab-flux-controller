@@ -5,4 +5,5 @@ resources:
   - image-automation.yaml
   - apps.yaml
   - rancher.yaml           # Rancher UI (independent, non-blocking Kustomization)
+  - portainer.yaml         # Portainer UI (independent, non-blocking Kustomization)
 
