@@ -4,10 +4,13 @@ metadata:
   name: rancher
   namespace: flux-system
 spec:
-  # Rancher's install previously destabilised this 4-core / 3.7GiB Raspberry
-  # Pi (helm upgrade-hook churn starved sqlite, crashing the Flux
-  # controllers). If it happens again, set suspend: true to stop it.
-  suspend: false
+  # Suspended again: retried 2026-07-10 and reproduced the same failure —
+  # helm install pushed node load average to ~18 on 4 cores, flapping the
+  # node NotReady and crash-looping every Flux controller. Root cause is
+  # CPU starvation from Rancher's install-time workload, not a fluke.
+  # Needs either a much lighter install path or more CPU headroom before
+  # retrying.
+  suspend: true
   interval: 10m
   releaseName: rancher
   targetNamespace: cattle-system
