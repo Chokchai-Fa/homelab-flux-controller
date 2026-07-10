@@ -11,3 +11,4 @@ kind: Kustomization
 
 resources:
   - weave-gitops  # GitOps dashboard for Flux CD
+  - rancher       # Rancher cluster-management UI (routed via Cloudflare Tunnel)

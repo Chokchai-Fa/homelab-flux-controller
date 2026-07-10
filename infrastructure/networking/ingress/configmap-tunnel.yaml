@@ -30,6 +30,10 @@ data:
         # Routes to ccms-backend service in default namespace
         service: http://ccms-backend.default.svc.cluster.local:8080
 
+      - hostname: rancher.chokchai-dev.xyz
+        # Routes to Rancher UI in cattle-system namespace (TLS terminated by Cloudflare)
+        service: http://rancher.cattle-system.svc.cluster.local:80
+
 
       # Catch-all for any other requests
       - service: http_status:404
