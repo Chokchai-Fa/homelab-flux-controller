@@ -43,10 +43,10 @@ spec:
               mountPath: /home/coder
           resources:
             requests:
-              cpu: 200m
-              memory: 256Mi
+              cpu: 250m
+              memory: 512Mi
             limits:
-              memory: 1Gi
+              memory: 1536Mi
       volumes:
         - name: home
           persistentVolumeClaim:
