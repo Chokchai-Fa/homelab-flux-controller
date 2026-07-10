@@ -11,4 +11,7 @@ kind: Kustomization
 
 resources:
   - weave-gitops  # GitOps dashboard for Flux CD
-  - rancher       # Rancher cluster-management UI (routed via Cloudflare Tunnel)
+  # Rancher is intentionally NOT here. It is reconciled by its own top-level
+  # Flux Kustomization (clusters/homelab/apps/rancher.yaml) so that a slow or
+  # failing Rancher install never blocks the wait:true `infrastructure` set
+  # (and therefore the business `apps`). See that file.
