@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: code-server
+  namespace: code-server
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: code-server
+  template:
+    metadata:
+      labels:
+        app: code-server
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: code-server
+          image: codercom/code-server:4.127.0
+          args:
+            - --bind-addr=0.0.0.0:8080
+            - --user-data-dir=/home/coder/.local/share/code-server
+            - /home/coder/project
+          ports:
+            - containerPort: 8080
+          env:
+            # code-server exposes a full terminal (arbitrary code execution),
+            # so it must never run with --auth none. This secret is created
+            # directly in-cluster (kubectl create secret) and deliberately
+            # NOT committed to git - unlike Rancher's old plaintext
+            # bootstrapPassword, credentials for anything reachable from the
+            # public internet shouldn't live in the repo.
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: code-server-auth
+                  key: password
+          volumeMounts:
+            - name: home
+              mountPath: /home/coder
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              memory: 1Gi
+      volumes:
+        - name: home
+          persistentVolumeClaim:
+            claimName: code-server-home

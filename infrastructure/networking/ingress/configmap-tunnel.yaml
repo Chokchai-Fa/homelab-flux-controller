@@ -26,5 +26,9 @@ data:
         # Routes to Portainer UI in portainer namespace (TLS terminated by Cloudflare)
         service: http://portainer.portainer.svc.cluster.local:9000
 
+      - hostname: codeserver.chokchai-dev.xyz
+        # Routes to code-server IDE in code-server namespace (TLS terminated by Cloudflare)
+        service: http://code-server.code-server.svc.cluster.local:8080
+
       # Catch-all for any other requests
       - service: http_status:404
