@@ -4,6 +4,10 @@ metadata:
   name: rancher
   namespace: flux-system
 spec:
+  # Suspended: Rancher's install repeatedly destabilised this 4-core / 3.7GiB
+  # Raspberry Pi (helm upgrade-hook churn starved sqlite, crashing the Flux
+  # controllers). Set to false to attempt the install on a calm cluster.
+  suspend: true
   interval: 10m
   releaseName: rancher
   targetNamespace: cattle-system
