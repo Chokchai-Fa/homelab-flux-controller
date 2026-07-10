@@ -2,6 +2,15 @@
 
 A GitOps-based Kubernetes deployment setup using Flux CD for managing homelab applications with proper infrastructure separation.
 
+> **Cluster engine:** [k3s](https://k3s.io/) (lightweight Kubernetes) running on a Raspberry Pi (arm64).
+> Installed with Traefik disabled — external routing is handled entirely by a Cloudflare Tunnel
+> (`cloudflared`) to in-cluster ClusterIP services. Persistent storage uses the built-in
+> `local-path` StorageClass.
+>
+> The Kubernetes version is pinned to the **v1.35** channel because the current stable Rancher
+> chart requires `kubeVersion < 1.36`. Reinstall/upgrade with:
+> `curl -sfL https://get.k3s.io | sudo INSTALL_K3S_CHANNEL=v1.35 INSTALL_K3S_EXEC="--disable=traefik --write-kubeconfig-mode=644" sh -`
+
 ## 🏗️ Project Structure
 
 This repository follows GitOps best practices with clear separation between infrastructure, image automation, and application workloads.
@@ -117,7 +126,7 @@ spec:
 ```
 
 ### **6. Centralized Ingress Routing (Cloudflare Tunnel)**
-Ingress in this repository is now managed by a GitOps-controlled Cloudflare Tunnel workload. The tunnel maps external hostnames to in-cluster services using internal DNS (ClusterIP). This removes the need to expose NodePorts on the cluster nodes.
+Ingress in this repository is managed by a GitOps-controlled Cloudflare Tunnel workload (no in-cluster ingress controller / Traefik is used). The tunnel maps external hostnames to in-cluster services using internal DNS (ClusterIP). This removes the need to expose NodePorts on the cluster nodes.
 
 Manifests:
 
@@ -139,8 +148,16 @@ ingress:
     service: http://portfolio-web.default.svc.cluster.local:3000
   - hostname: weaver-gitops.chokchai-dev.xyz
     service: http://weave-gitops.flux-system.svc.cluster.local:9001
+  - hostname: rancher.chokchai-dev.xyz
+    service: http://rancher.cattle-system.svc.cluster.local:80
   - service: http_status:404
 ```
+
+> **Rancher UI:** deployed via Helm (`infrastructure/monitoring/rancher/`) into the
+> `cattle-system` namespace with `tls=external` and the in-cluster Ingress disabled, so
+> Cloudflare terminates TLS and forwards HTTP to the Rancher service. Add a `rancher`
+> hostname to the tunnel in the Cloudflare dashboard, then log in with the bootstrap
+> password from the HelmRelease values.
 
 ## 🔄 Image Automation
 

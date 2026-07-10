@@ -3,3 +3,27 @@ kind: Kustomization
 resources:
 - gotk-components.yaml
 - gotk-sync.yaml
+# Relax the default 1s liveness probe timeout for all Flux controllers.
+# On this Raspberry Pi (slow SD-card I/O) the controllers cannot answer the
+# healthz probe within 1s under load, causing a CrashLoopBackOff. Widening the
+# timeout / period / failure threshold lets them stay up on constrained hardware.
+patches:
+  - target:
+      kind: Deployment
+      namespace: flux-system
+      labelSelector: app.kubernetes.io/part-of=flux
+    patch: |
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: flux-controller
+      spec:
+        template:
+          spec:
+            containers:
+              - name: manager
+                livenessProbe:
+                  initialDelaySeconds: 30
+                  timeoutSeconds: 10
+                  periodSeconds: 30
+                  failureThreshold: 6
