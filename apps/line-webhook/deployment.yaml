@@ -28,6 +28,11 @@ spec:
             secretKeyRef:
               name: line-webhook-secret
               key: LINE_CHANNEL_SECRET
+        - name: LINE_CHANNEL_ACCESS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: line-webhook-secret
+              key: LINE_CHANNEL_ACCESS_TOKEN
         - name: NATS_URL
           value: nats://nats.core.svc.cluster.local:4222
         # nats-auth is copied into the default namespace directly in-cluster
