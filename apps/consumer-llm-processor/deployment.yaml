@@ -15,13 +15,24 @@ spec:
       labels:
         app: consumer-llm-processor
     spec:
+      # Cluster DNS (via the node's upstream) intermittently SERVFAILs for
+      # external names; fall back to a public resolver so Gemini API calls
+      # survive the blips. 10.43.0.10 = kube-dns, tried first.
+      dnsPolicy: "None"
+      dnsConfig:
+        nameservers:
+          - 10.43.0.10
+          - 1.1.1.1
+        searches:
+          - default.svc.cluster.local
+          - svc.cluster.local
+          - cluster.local
+        options:
+          - name: ndots
+            value: "5"
       containers:
       - name: consumer-llm-processor
         image: chokchaifa/consumer-llm-processor:v1.0.0-5.8706af2 # {"$imagepolicy": "flux-system:consumer-llm-processor"}
-        ports:
-        - containerPort: 8080
-          name: http
-          protocol: TCP
         env:
         - name: NATS_URL
           value: nats://nats.core.svc.cluster.local:4222
@@ -69,16 +80,4 @@ spec:
           requests:
             cpu: 100m
             memory: 64Mi
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 8080
-          initialDelaySeconds: 20
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 8080
-          initialDelaySeconds: 5
-          periodSeconds: 5
       restartPolicy: Always
