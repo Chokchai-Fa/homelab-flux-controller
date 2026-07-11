@@ -34,12 +34,5 @@ data:
         # NATS monitoring/varz dashboard (HTTP) in core namespace
         service: http://nats.core.svc.cluster.local:8222
 
-      - hostname: nats-tcp.chokchai-dev.xyz
-        # Raw NATS client protocol (TCP, not HTTP). External clients must
-        # proxy through `cloudflared access tcp --hostname nats-tcp.chokchai-dev.xyz
-        # --url localhost:4222` and point their NATS client at localhost - a
-        # plain NATS URL pointed at this hostname will not work directly.
-        service: tcp://nats.core.svc.cluster.local:4222
-
       # Catch-all for any other requests
       - service: http_status:404

@@ -21,16 +21,38 @@ spec:
           # Core NATS only - no JetStream/-js flag, so pub/sub state lives in
           # memory and is never written to disk. No PVC on purpose.
           args:
-            - "-m"
-            - "8222"
+            - "-c"
+            - "/etc/nats/nats-server.conf"
+          env:
+            # nats-auth is created directly in-cluster (kubectl create
+            # secret) and deliberately NOT committed to git - see
+            # configmap.yaml for why.
+            - name: NATS_USER
+              valueFrom:
+                secretKeyRef:
+                  name: nats-auth
+                  key: username
+            - name: NATS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: nats-auth
+                  key: password
           ports:
             - containerPort: 4222
               name: client
             - containerPort: 8222
               name: monitor
+          volumeMounts:
+            - name: config
+              mountPath: /etc/nats/nats-server.conf
+              subPath: nats-server.conf
           resources:
             requests:
               cpu: 50m
               memory: 64Mi
             limits:
               memory: 256Mi
+      volumes:
+        - name: config
+          configMap:
+            name: nats-config

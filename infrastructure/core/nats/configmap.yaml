@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nats-config
+  namespace: core
+data:
+  nats-server.conf: |
+    port: 4222
+    http_port: 8222
+
+    # $NATS_USER / $NATS_PASSWORD are expanded from the nats-auth Secret,
+    # which is created directly in-cluster and NOT committed to git - same
+    # reasoning as code-server-auth: this broker is reachable from the
+    # public internet via the nats-tcp cloudflared hostname.
+    authorization {
+      user: $NATS_USER
+      password: $NATS_PASSWORD
+    }
