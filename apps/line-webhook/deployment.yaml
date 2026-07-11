@@ -28,13 +28,6 @@ spec:
             secretKeyRef:
               name: line-webhook-secret
               key: LINE_CHANNEL_SECRET
-        # LINE_CHANNEL_ACCESS_TOKEN is only read by pre-1.2.0 images; kept so
-        # the old image keeps running until image automation rolls the new tag.
-        - name: LINE_CHANNEL_ACCESS_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: line-webhook-secret
-              key: LINE_CHANNEL_ACCESS_TOKEN
         - name: NATS_URL
           value: nats://nats.core.svc.cluster.local:4222
         # nats-auth is copied into the default namespace directly in-cluster
@@ -51,6 +44,23 @@ spec:
               key: password
         - name: AI_PREFIX
           value: /ai
+        - name: AI_SESSION_TTL
+          value: 10m
+        # AI session state lives in Redis with a sliding TTL so "/ai" opens a
+        # session and it auto-ends after 10 minutes of silence. redis-auth is
+        # copied into the default namespace in-cluster, not committed to git.
+        - name: REDIS_ADDR
+          value: redis.core.svc.cluster.local:6379
+        - name: REDIS_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: redis-auth
+              key: username
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: redis-auth
+              key: password
         resources:
           limits:
             cpu: 300m
