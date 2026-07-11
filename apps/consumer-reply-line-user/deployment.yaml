@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: consumer-reply-line-user
-        image: chokchaifa/consumer-reply-line-user:v1.0.0-0.placeholder # {"$imagepolicy": "flux-system:consumer-reply-line-user"}
+        image: chokchaifa/consumer-reply-line-user:v1.0.0-5.8706af2 # {"$imagepolicy": "flux-system:consumer-reply-line-user"}
         ports:
         - containerPort: 8080
           name: http
