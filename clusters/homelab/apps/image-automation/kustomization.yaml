@@ -4,3 +4,5 @@ kind: Kustomization
 resources:
   - portfolio-web
   - line-webhook
+  - consumer-llm-processor
+  - consumer-reply-line-user

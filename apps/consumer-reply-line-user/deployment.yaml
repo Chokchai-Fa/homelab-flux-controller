@@ -1,44 +1,33 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: line-webhook
+  name: consumer-reply-line-user
   namespace: default
   labels:
-    app: line-webhook
+    app: consumer-reply-line-user
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: line-webhook
+      app: consumer-reply-line-user
   template:
     metadata:
       labels:
-        app: line-webhook
+        app: consumer-reply-line-user
     spec:
       containers:
-      - name: line-webhook
-        image: chokchaifa/line-webhook:v1.0.8-0b002e6 # {"$imagepolicy": "flux-system:line-webhook"}
+      - name: consumer-reply-line-user
+        image: chokchaifa/consumer-reply-line-user:v1.0.0-0.placeholder # {"$imagepolicy": "flux-system:consumer-reply-line-user"}
         ports:
         - containerPort: 8080
           name: http
           protocol: TCP
         env:
-        - name: LINE_CHANNEL_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: line-webhook-secret
-              key: LINE_CHANNEL_SECRET
-        # LINE_CHANNEL_ACCESS_TOKEN is only read by pre-1.2.0 images; kept so
-        # the old image keeps running until image automation rolls the new tag.
-        - name: LINE_CHANNEL_ACCESS_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: line-webhook-secret
-              key: LINE_CHANNEL_ACCESS_TOKEN
         - name: NATS_URL
           value: nats://nats.core.svc.cluster.local:4222
-        # nats-auth is copied into the default namespace directly in-cluster
-        # (kubectl create secret) and deliberately NOT committed to git.
+        # nats-auth (copied into default) and line-webhook-secret are created
+        # directly in-cluster (kubectl create secret) and deliberately NOT
+        # committed to git.
         - name: NATS_USER
           valueFrom:
             secretKeyRef:
@@ -49,8 +38,16 @@ spec:
             secretKeyRef:
               name: nats-auth
               key: password
-        - name: AI_PREFIX
-          value: /ai
+        - name: LINE_CHANNEL_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: line-webhook-secret
+              key: LINE_CHANNEL_SECRET
+        - name: LINE_CHANNEL_ACCESS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: line-webhook-secret
+              key: LINE_CHANNEL_ACCESS_TOKEN
         resources:
           limits:
             cpu: 300m
