@@ -32,7 +32,7 @@ spec:
             value: "5"
       containers:
         - name: consumer-reply-line-user
-          image: chokchaifa/consumer-reply-line-user:v1.0.2-11.67ccf6d # {"$imagepolicy": "flux-system:consumer-reply-line-user"}
+          image: chokchaifa/consumer-reply-line-user:v1.0.2-13.b1ad97a # {"$imagepolicy": "flux-system:consumer-reply-line-user"}
           env:
             - name: NATS_URL
               value: nats://nats.core.svc.cluster.local:4222
