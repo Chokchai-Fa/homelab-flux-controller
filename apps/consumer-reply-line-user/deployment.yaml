@@ -31,39 +31,39 @@ spec:
           - name: ndots
             value: "5"
       containers:
-      - name: consumer-reply-line-user
-        image: chokchaifa/consumer-reply-line-user:v1.0.0-5.8706af2 # {"$imagepolicy": "flux-system:consumer-reply-line-user"}
-        env:
-        - name: NATS_URL
-          value: nats://nats.core.svc.cluster.local:4222
-        # nats-auth (copied into default) and line-webhook-secret are created
-        # directly in-cluster (kubectl create secret) and deliberately NOT
-        # committed to git.
-        - name: NATS_USER
-          valueFrom:
-            secretKeyRef:
-              name: nats-auth
-              key: username
-        - name: NATS_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: nats-auth
-              key: password
-        - name: LINE_CHANNEL_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: line-webhook-secret
-              key: LINE_CHANNEL_SECRET
-        - name: LINE_CHANNEL_ACCESS_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: line-webhook-secret
-              key: LINE_CHANNEL_ACCESS_TOKEN
-        resources:
-          limits:
-            cpu: 300m
-            memory: 256Mi
-          requests:
-            cpu: 100m
-            memory: 64Mi
+        - name: consumer-reply-line-user
+          image: chokchaifa/consumer-reply-line-user:v1.0.2-11.67ccf6d # {"$imagepolicy": "flux-system:consumer-reply-line-user"}
+          env:
+            - name: NATS_URL
+              value: nats://nats.core.svc.cluster.local:4222
+            # nats-auth (copied into default) and line-webhook-secret are created
+            # directly in-cluster (kubectl create secret) and deliberately NOT
+            # committed to git.
+            - name: NATS_USER
+              valueFrom:
+                secretKeyRef:
+                  name: nats-auth
+                  key: username
+            - name: NATS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: nats-auth
+                  key: password
+            - name: LINE_CHANNEL_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: line-webhook-secret
+                  key: LINE_CHANNEL_SECRET
+            - name: LINE_CHANNEL_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: line-webhook-secret
+                  key: LINE_CHANNEL_ACCESS_TOKEN
+          resources:
+            limits:
+              cpu: 300m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 64Mi
       restartPolicy: Always
