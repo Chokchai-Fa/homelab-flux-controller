@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: core
+  labels:
+    app: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:7-alpine
+          # Shared cache only (LINE chat conversation history) - data is
+          # rebuilt from Postgres on a miss, so no PVC on purpose.
+          # Auth: the default user is disabled and a single ACL user is
+          # created from the redis-auth secret.
+          command: ["sh", "-c"]
+          # Each ACL token must be a separate argument - a single quoted
+          # string would be read as one (invalid) username.
+          args:
+            - >-
+              exec redis-server
+              --maxmemory 64mb
+              --maxmemory-policy allkeys-lru
+              --user default off
+              --user "$REDIS_USERNAME" on ">$REDIS_PASSWORD" "~*" "&*" "+@all"
+          env:
+            # redis-auth is created directly in-cluster (kubectl create
+            # secret) and deliberately NOT committed to git.
+            - name: REDIS_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: redis-auth
+                  key: username
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: redis-auth
+                  key: password
+          ports:
+            - containerPort: 6379
+              name: client
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              memory: 128Mi
+          livenessProbe:
+            tcpSocket:
+              port: 6379
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: 6379
+            initialDelaySeconds: 5
+            periodSeconds: 5

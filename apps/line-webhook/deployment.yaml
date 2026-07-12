@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: line-webhook
-        image: chokchaifa/line-webhook:v1.0.8-0b002e6 # {"$imagepolicy": "flux-system:line-webhook"}
+        image: chokchaifa/line-webhook:v1.3.0-13.b1ad97a # {"$imagepolicy": "flux-system:line-webhook"}
         ports:
         - containerPort: 8080
           name: http
@@ -36,6 +36,39 @@ spec:
             secretKeyRef:
               name: line-webhook-secret
               key: LINE_CHANNEL_ACCESS_TOKEN
+        - name: NATS_URL
+          value: nats://nats.core.svc.cluster.local:4222
+        # nats-auth is copied into the default namespace directly in-cluster
+        # (kubectl create secret) and deliberately NOT committed to git.
+        - name: NATS_USER
+          valueFrom:
+            secretKeyRef:
+              name: nats-auth
+              key: username
+        - name: NATS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: nats-auth
+              key: password
+        - name: AI_PREFIX
+          value: /ai
+        - name: AI_SESSION_TTL
+          value: 10m
+        # AI session state lives in Redis with a sliding TTL so "/ai" opens a
+        # session and it auto-ends after 10 minutes of silence. redis-auth is
+        # copied into the default namespace in-cluster, not committed to git.
+        - name: REDIS_ADDR
+          value: redis.core.svc.cluster.local:6379
+        - name: REDIS_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: redis-auth
+              key: username
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: redis-auth
+              key: password
         resources:
           limits:
             cpu: 300m

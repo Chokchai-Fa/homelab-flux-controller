@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer-reply-line-user
+  namespace: default
+  labels:
+    app: consumer-reply-line-user
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consumer-reply-line-user
+  template:
+    metadata:
+      labels:
+        app: consumer-reply-line-user
+    spec:
+      # Cluster DNS (via the node's upstream) intermittently SERVFAILs for
+      # external names; fall back to a public resolver so LINE API calls
+      # survive the blips. 10.43.0.10 = kube-dns, tried first.
+      dnsPolicy: "None"
+      dnsConfig:
+        nameservers:
+          - 10.43.0.10
+          - 1.1.1.1
+        searches:
+          - default.svc.cluster.local
+          - svc.cluster.local
+          - cluster.local
+        options:
+          - name: ndots
+            value: "5"
+      containers:
+        - name: consumer-reply-line-user
+          image: chokchaifa/consumer-reply-line-user:v1.0.2-13.b1ad97a # {"$imagepolicy": "flux-system:consumer-reply-line-user"}
+          env:
+            - name: NATS_URL
+              value: nats://nats.core.svc.cluster.local:4222
+            # nats-auth (copied into default) and line-webhook-secret are created
+            # directly in-cluster (kubectl create secret) and deliberately NOT
+            # committed to git.
+            - name: NATS_USER
+              valueFrom:
+                secretKeyRef:
+                  name: nats-auth
+                  key: username
+            - name: NATS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: nats-auth
+                  key: password
+            - name: LINE_CHANNEL_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: line-webhook-secret
+                  key: LINE_CHANNEL_SECRET
+            - name: LINE_CHANNEL_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: line-webhook-secret
+                  key: LINE_CHANNEL_ACCESS_TOKEN
+          resources:
+            limits:
+              cpu: 300m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 64Mi
+      restartPolicy: Always

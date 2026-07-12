@@ -5,5 +5,4 @@ resources:
   - image-automation.yaml
   - apps.yaml
   - portainer.yaml         # Portainer UI (independent, non-blocking Kustomization)
-  - code-server.yaml       # code-server IDE (independent, non-blocking Kustomization)
 

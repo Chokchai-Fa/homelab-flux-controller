@@ -30,5 +30,9 @@ data:
         # Routes to code-server IDE in code-server namespace (TLS terminated by Cloudflare)
         service: http://code-server.code-server.svc.cluster.local:8080
 
+      - hostname: nats.chokchai-dev.xyz
+        # NATS monitoring/varz dashboard (HTTP) in core namespace
+        service: http://nats.core.svc.cluster.local:8222
+
       # Catch-all for any other requests
       - service: http_status:404

@@ -6,7 +6,9 @@ kind: Kustomization
 
 resources:
   - portfolio-web  # Next.js portfolio application
-  - line-webhook  # LINE webhook service
+  - line-webhook  # LINE webhook service (produces chat events to NATS)
+  - consumer-llm-processor  # NATS consumer: Gemini AI with conversation memory
+  - consumer-reply-line-user  # NATS consumer: delivers replies to LINE users
   # - api        # Example API microservice
   # - frontend  # Example for future apps
   # - db-admin  # Example for future apps
