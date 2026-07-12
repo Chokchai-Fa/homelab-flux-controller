@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: line-webhook
-        image: chokchaifa/line-webhook:v1.3.0-13.b1ad97a # {"$imagepolicy": "flux-system:line-webhook"}
+        image: chokchaifa/line-webhook:v1.3.0-14.dffeba6 # {"$imagepolicy": "flux-system:line-webhook"}
         ports:
         - containerPort: 8080
           name: http
