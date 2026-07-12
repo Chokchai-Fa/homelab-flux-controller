@@ -22,6 +22,9 @@ spec:
         - containerPort: 8080
           name: http
           protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: line-webhook-config
         env:
         - name: LINE_CHANNEL_SECRET
           valueFrom:
