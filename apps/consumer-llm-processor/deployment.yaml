@@ -56,6 +56,10 @@ spec:
                   key: GEMINI_API_KEY
             - name: GEMINI_MODEL
               value: gemini-3.1-flash-lite
+            # Nano Banana image generation (same API key, free tier ~500
+            # images/day) for "draw me a ..." requests.
+            - name: GEMINI_IMAGE_MODEL
+              value: gemini-2.5-flash-image
             # Optional free-tier providers for the difficulty router; the
             # service runs on Gemini alone until these keys are added to
             # consumer-llm-processor-secret (kubectl patch/create, not git).
