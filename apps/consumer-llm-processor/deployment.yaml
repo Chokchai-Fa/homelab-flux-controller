@@ -32,7 +32,7 @@ spec:
             value: "5"
       containers:
         - name: consumer-llm-processor
-          image: chokchaifa/consumer-llm-processor:v1.0.3-11.67ccf6d # {"$imagepolicy": "flux-system:consumer-llm-processor"}
+          image: chokchaifa/consumer-llm-processor:v1.0.3-16.a9b6983 # {"$imagepolicy": "flux-system:consumer-llm-processor"}
           env:
             - name: NATS_URL
               value: nats://nats.core.svc.cluster.local:4222
@@ -55,7 +55,7 @@ spec:
                   name: consumer-llm-processor-secret
                   key: GEMINI_API_KEY
             - name: GEMINI_MODEL
-              value: gemini-3.5-flash
+              value: gemini-3.1-flash-lite
             # Optional free-tier providers for the difficulty router; the
             # service runs on Gemini alone until these keys are added to
             # consumer-llm-processor-secret (kubectl patch/create, not git).

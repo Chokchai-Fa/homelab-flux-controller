@@ -17,11 +17,14 @@ spec:
     spec:
       containers:
       - name: line-webhook
-        image: chokchaifa/line-webhook:v1.3.0-10.74b0ce6 # {"$imagepolicy": "flux-system:line-webhook"}
+        image: chokchaifa/line-webhook:v1.3.0-16.a9b6983 # {"$imagepolicy": "flux-system:line-webhook"}
         ports:
         - containerPort: 8080
           name: http
           protocol: TCP
+        envFrom:
+        - configMapRef:
+            name: line-webhook-config
         env:
         - name: LINE_CHANNEL_SECRET
           valueFrom:
