@@ -56,6 +56,21 @@ spec:
                   key: GEMINI_API_KEY
             - name: GEMINI_MODEL
               value: gemini-3.5-flash
+            # Optional free-tier providers for the difficulty router; the
+            # service runs on Gemini alone until these keys are added to
+            # consumer-llm-processor-secret (kubectl patch/create, not git).
+            - name: GROQ_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: consumer-llm-processor-secret
+                  key: GROQ_API_KEY
+                  optional: true
+            - name: OPENROUTER_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: consumer-llm-processor-secret
+                  key: OPENROUTER_API_KEY
+                  optional: true
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
