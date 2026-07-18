@@ -54,6 +54,11 @@ spec:
           value: /ai
         - name: AI_SESSION_TTL
           value: 10m
+        # Images sent during an AI session are downloaded from LINE and
+        # stashed in Redis (NATS message size caps rule out sending bytes
+        # directly) until consumer-llm-processor picks them up.
+        - name: IMAGE_TTL
+          value: 10m
         # AI session state lives in Redis with a sliding TTL so "/ai" opens a
         # session and it auto-ends after 10 minutes of silence. redis-auth is
         # copied into the default namespace in-cluster, not committed to git.

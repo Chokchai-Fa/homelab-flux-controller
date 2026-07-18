@@ -71,6 +71,11 @@ spec:
                   name: consumer-llm-processor-secret
                   key: OPENROUTER_API_KEY
                   optional: true
+            # OpenRouter's :free lineup rotates (deepseek-r1:free died
+            # 2026-07); when this 404s in the logs, pick a replacement from
+            # https://openrouter.ai/api/v1/models (ids ending in :free).
+            - name: OPENROUTER_MODEL
+              value: nvidia/nemotron-3-ultra-550b-a55b:free
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
