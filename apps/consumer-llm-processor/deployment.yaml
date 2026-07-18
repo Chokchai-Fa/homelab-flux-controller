@@ -76,6 +76,14 @@ spec:
             # https://openrouter.ai/api/v1/models (ids ending in :free).
             - name: OPENROUTER_MODEL
               value: nvidia/nemotron-3-ultra-550b-a55b:free
+            # Chat debouncing: a user's burst of rapid messages is answered
+            # as one request once they've been quiet for DEBOUNCE_WINDOW.
+            # Every reply pays this delay - tune from the
+            # "debounce: merged burst" log lines.
+            - name: DEBOUNCE_WINDOW
+              value: 5s
+            - name: DEBOUNCE_MAX_WAIT
+              value: 15s
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
