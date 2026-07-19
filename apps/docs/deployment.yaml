@@ -20,7 +20,7 @@ spec:
           # Static Docusaurus site served by nginx. Placeholder tag below is
           # rewritten by Flux image-automation once CI pushes the first real
           # v1.0.0-<run>.<sha> tag.
-          image: chokchaifa/docs:v1.1.0-28.6963f5c # {"$imagepolicy": "flux-system:docs"}
+          image: chokchaifa/docs:v1.2.0-29.1abb3b1 # {"$imagepolicy": "flux-system:docs"}
           ports:
             - containerPort: 80
               name: http
