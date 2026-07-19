@@ -29,6 +29,12 @@ spec:
     - port: 9000
       targetPort: 9000
       name: api
+    # Port 80 so the CoreDNS-hairpinned s3.chokchai-dev.xyz works without a
+    # port suffix: presigned URLs signed for "s3.chokchai-dev.xyz" (no port)
+    # then validate both in-cluster and through the tunnel.
+    - port: 80
+      targetPort: 9000
+      name: api-http
     - port: 9001
       targetPort: 9001
       name: console

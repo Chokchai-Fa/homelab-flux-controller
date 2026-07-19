@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns-custom
+  namespace: kube-system
+data:
+  # k3s's CoreDNS imports /etc/coredns/custom/*.override into its main
+  # server block. Hairpin the public S3 hostname to the in-cluster MinIO
+  # service: pods (the MinIO console in particular) that talk to
+  # s3.chokchai-dev.xyz then reach MinIO directly instead of looping out
+  # through the Cloudflare tunnel, whose proxy breaks aws-chunked request
+  # signing. This is what lets console-generated presigned/share URLs be
+  # signed for the public hostname while console traffic stays local.
+  s3-hairpin.override: |
+    rewrite stop {
+      name exact s3.chokchai-dev.xyz minio.core.svc.cluster.local
+      answer auto
+    }
