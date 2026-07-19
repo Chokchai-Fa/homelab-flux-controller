@@ -38,5 +38,13 @@ data:
         # NATS monitoring/varz dashboard (HTTP) in core namespace
         service: http://nats.core.svc.cluster.local:8222
 
+      - hostname: minio.chokchai-dev.xyz
+        # MinIO web console in core namespace
+        service: http://minio.core.svc.cluster.local:9001
+
+      - hostname: s3.chokchai-dev.xyz
+        # MinIO S3 API in core namespace (presigned URLs / SDK clients)
+        service: http://minio.core.svc.cluster.local:9000
+
       # Catch-all for any other requests
       - service: http_status:404

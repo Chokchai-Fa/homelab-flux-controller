@@ -38,6 +38,13 @@ spec:
                 secretKeyRef:
                   name: minio-auth
                   key: password
+            # Public URLs behind the cloudflared tunnel: presigned URLs and
+            # console->API redirects must use the outside hostnames, not the
+            # in-cluster ones.
+            - name: MINIO_SERVER_URL
+              value: https://s3.chokchai-dev.xyz
+            - name: MINIO_BROWSER_REDIRECT_URL
+              value: https://minio.chokchai-dev.xyz
           ports:
             - containerPort: 9000
               name: api
