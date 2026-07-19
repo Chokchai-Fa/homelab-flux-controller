@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker-reminder-scheduler
+  namespace: default
+  labels:
+    app: worker-reminder-scheduler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker-reminder-scheduler
+  template:
+    metadata:
+      labels:
+        app: worker-reminder-scheduler
+    spec:
+      containers:
+        - name: worker-reminder-scheduler
+          image: chokchaifa/worker-reminder-scheduler:v1.0.0-0.0000000 # {"$imagepolicy": "flux-system:worker-reminder-scheduler"}
+          env:
+            # DATABASE_URL reuses consumer-llm-processor-secret; redis-auth
+            # is copied into the default namespace directly in-cluster
+            # (kubectl create secret) and deliberately NOT committed to git.
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: consumer-llm-processor-secret
+                  key: DATABASE_URL
+            - name: REDIS_ADDR
+              value: redis.core.svc.cluster.local:6379
+            - name: REDIS_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: redis-auth
+                  key: username
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: redis-auth
+                  key: password
+            - name: ARM_HORIZON
+              value: 5m
+            - name: TICK
+              value: 1m
+          resources:
+            limits:
+              cpu: 100m
+              memory: 64Mi
+            requests:
+              cpu: 20m
+              memory: 32Mi
+      restartPolicy: Always

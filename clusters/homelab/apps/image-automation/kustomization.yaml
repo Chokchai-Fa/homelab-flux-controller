@@ -6,3 +6,6 @@ resources:
   - line-webhook
   - consumer-llm-processor
   - consumer-reply-line-user
+  - consumer-reminder
+  - worker-reminder-scheduler
+  - subscriber-reminder-notifier

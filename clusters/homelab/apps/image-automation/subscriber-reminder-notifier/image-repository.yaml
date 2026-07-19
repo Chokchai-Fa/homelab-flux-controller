@@ -1,0 +1,8 @@
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: subscriber-reminder-notifier
+  namespace: flux-system
+spec:
+  image: chokchaifa/subscriber-reminder-notifier
+  interval: 1m0s

@@ -1,0 +1,8 @@
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: worker-reminder-scheduler
+  namespace: flux-system
+spec:
+  image: chokchaifa/worker-reminder-scheduler
+  interval: 1m0s

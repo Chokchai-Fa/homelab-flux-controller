@@ -9,6 +9,9 @@ resources:
   - line-webhook  # LINE webhook service (produces chat events to NATS)
   - consumer-llm-processor  # NATS consumer: Gemini AI with conversation memory
   - consumer-reply-line-user  # NATS consumer: delivers replies to LINE users
+  - consumer-reminder  # NATS consumer: reminder chat flow, line_users + reminders tables
+  - worker-reminder-scheduler  # go-cron: arms due reminders as expiring Redis keys
+  - subscriber-reminder-notifier  # Redis keyspace subscriber: fires reminders as flex messages
   # - api        # Example API microservice
   # - frontend  # Example for future apps
   # - db-admin  # Example for future apps

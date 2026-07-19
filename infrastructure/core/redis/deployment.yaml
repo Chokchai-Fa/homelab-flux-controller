@@ -25,11 +25,19 @@ spec:
           command: ["sh", "-c"]
           # Each ACL token must be a separate argument - a single quoted
           # string would be read as one (invalid) username.
+          # notify-keyspace-events Ex: publish key-expiry events; the reminder
+          # pipeline arms reminders as TTL'd keys and
+          # subscriber-reminder-notifier fires them from the expired events.
+          # Delivery is at-most-once (worker-reminder-scheduler recovers
+          # misses from Postgres). NOTE: allkeys-lru may evict armed keys
+          # under memory pressure - eviction fires "evicted", not "expired",
+          # so reminders never fire early; recovery re-arms them.
           args:
             - >-
               exec redis-server
               --maxmemory 64mb
               --maxmemory-policy allkeys-lru
+              --notify-keyspace-events Ex
               --user default off
               --user "$REDIS_USERNAME" on ">$REDIS_PASSWORD" "~*" "&*" "+@all"
           env:
