@@ -56,8 +56,28 @@ spec:
                   key: GEMINI_API_KEY
             - name: GEMINI_MODEL
               value: gemini-3.1-flash-lite
-            # Nano Banana image generation (same API key, free tier ~500
-            # images/day) for "draw me a ..." requests.
+            # Image generation for "draw me a ..." requests. Google dropped
+            # image models from the Gemini API free tier (~2026-03), so Nano
+            # Banana now 429s on free keys; Cloudflare Workers AI (free tier
+            # 10k neurons/day, ~230 flux-1-schnell images) is preferred when
+            # CF_ACCOUNT_ID + CF_API_TOKEN exist in
+            # consumer-llm-processor-secret (kubectl patch, not git; token
+            # needs the Workers AI permission).
+            - name: CF_ACCOUNT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: consumer-llm-processor-secret
+                  key: CF_ACCOUNT_ID
+                  optional: true
+            - name: CF_API_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: consumer-llm-processor-secret
+                  key: CF_API_TOKEN
+                  optional: true
+            - name: CF_IMAGE_MODEL
+              value: "@cf/black-forest-labs/flux-1-schnell"
+            # Gemini fallback when Cloudflare creds are absent (paid keys only).
             - name: GEMINI_IMAGE_MODEL
               value: gemini-2.5-flash-image
             # Optional free-tier providers for the difficulty router; the
