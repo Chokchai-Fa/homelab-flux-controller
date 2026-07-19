@@ -22,6 +22,10 @@ data:
         # Routes to line-webhook service in default namespace
         service: http://line-webhook.default.svc.cluster.local:8080
 
+      - hostname: docs.chokchai-dev.xyz
+        # Routes to the Docusaurus docs site (nginx) in default namespace
+        service: http://docs.default.svc.cluster.local:80
+
       - hostname: portainer.chokchai-dev.xyz
         # Routes to Portainer UI in portainer namespace (TLS terminated by Cloudflare)
         service: http://portainer.portainer.svc.cluster.local:9000
