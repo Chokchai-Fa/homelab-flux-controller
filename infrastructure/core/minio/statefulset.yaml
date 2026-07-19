@@ -38,11 +38,12 @@ spec:
                 secretKeyRef:
                   name: minio-auth
                   key: password
-            # Public URLs behind the cloudflared tunnel: presigned URLs and
-            # console->API redirects must use the outside hostnames, not the
-            # in-cluster ones.
-            - name: MINIO_SERVER_URL
-              value: https://s3.chokchai-dev.xyz
+            # Console lives at its own public hostname behind the cloudflared
+            # tunnel. MINIO_SERVER_URL is deliberately NOT set: it would make
+            # the console's own S3 calls loop out through Cloudflare, whose
+            # proxy breaks aws-chunked signatures ("XML not well-formed" on
+            # every bucket/object operation). External SDK clients still use
+            # s3.chokchai-dev.xyz directly.
             - name: MINIO_BROWSER_REDIRECT_URL
               value: https://minio.chokchai-dev.xyz
           ports:
