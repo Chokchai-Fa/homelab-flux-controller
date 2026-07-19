@@ -59,6 +59,11 @@ spec:
                 secretKeyRef:
                   name: line-webhook-secret
                   key: LINE_CHANNEL_ACCESS_TOKEN
+            # LINE's servers fetch generated images over the public internet,
+            # so this must be the cloudflared tunnel hostname, not the
+            # in-cluster service DNS name.
+            - name: IMAGE_BASE_URL
+              value: https://line-webhook.chokchai-dev.xyz
           resources:
             limits:
               cpu: 300m
