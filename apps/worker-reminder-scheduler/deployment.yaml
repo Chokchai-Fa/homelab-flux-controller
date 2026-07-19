@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: worker-reminder-scheduler
-          image: chokchaifa/worker-reminder-scheduler:v1.0.0-0.0000000 # {"$imagepolicy": "flux-system:worker-reminder-scheduler"}
+          image: chokchaifa/worker-reminder-scheduler:v1.0.0-25.3cfe245 # {"$imagepolicy": "flux-system:worker-reminder-scheduler"}
           env:
             # DATABASE_URL reuses consumer-llm-processor-secret; redis-auth
             # is copied into the default namespace directly in-cluster
