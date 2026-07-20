@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portfolio-chat-gateway
+  namespace: default
+  labels:
+    app: portfolio-chat-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: portfolio-chat-gateway
+  template:
+    metadata:
+      labels:
+        app: portfolio-chat-gateway
+    spec:
+      containers:
+        - name: portfolio-chat-gateway
+          # First tag is a placeholder; Flux image automation rewrites it as
+          # soon as CI pushes the first real build.
+          image: chokchaifa/portfolio-chat-gateway:v1.0.0-1.0000000 # {"$imagepolicy": "flux-system:portfolio-chat-gateway"}
+          ports:
+            - containerPort: 8081
+              name: http
+              protocol: TCP
+          env:
+            - name: PORT
+              value: "8081"
+            - name: NATS_URL
+              value: nats://nats.core.svc.cluster.local:4222
+            # nats-auth is created directly in-cluster (kubectl create
+            # secret) and deliberately NOT committed to git.
+            - name: NATS_USER
+              valueFrom:
+                secretKeyRef:
+                  name: nats-auth
+                  key: username
+            - name: NATS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: nats-auth
+                  key: password
+            # Protects the free-tier LLM quotas behind the chat widget.
+            - name: RATE_LIMIT_PER_MIN
+              value: "10"
+            - name: MAX_MESSAGE_CHARS
+              value: "1000"
+            # Must stay above consumer-llm-processor's 55s generate timeout.
+            - name: REQUEST_TIMEOUT
+              value: 60s
+          resources:
+            limits:
+              cpu: 200m
+              memory: 128Mi
+            requests:
+              cpu: 50m
+              memory: 32Mi
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8081
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8081
+            initialDelaySeconds: 3
+            periodSeconds: 5
+      restartPolicy: Always

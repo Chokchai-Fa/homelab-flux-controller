@@ -27,6 +27,10 @@ spec:
           value: "production"
         - name: PORT
           value: "3000"
+        # Backend for the /api/chat route handler (AI chat widget). The
+        # gateway is ClusterIP-only; this proxy is its sole caller.
+        - name: CHAT_GATEWAY_URL
+          value: "http://portfolio-chat-gateway.default.svc.cluster.local:8081"
         resources:
           limits:
             cpu: 500m
