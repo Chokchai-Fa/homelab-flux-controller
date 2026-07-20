@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: subscriber-reminder-notifier
-          image: chokchaifa/subscriber-reminder-notifier:v1.0.0-26.eccb730 # {"$imagepolicy": "flux-system:subscriber-reminder-notifier"}
+          image: chokchaifa/subscriber-reminder-notifier:v1.0.0-40.14b353b # {"$imagepolicy": "flux-system:subscriber-reminder-notifier"}
           env:
             # nats-auth, redis-auth are copied into the default namespace
             # directly in-cluster (kubectl create secret) and deliberately
