@@ -125,6 +125,23 @@ spec:
                 secretKeyRef:
                   name: redis-auth
                   key: password
+            # Retrieval-augmented generation for the portfolio web channel:
+            # embeds a curated corpus into pgvector (Postgres) and injects the
+            # most relevant chunks per question. Reuses GEMINI_API_KEY for
+            # embeddings and DATABASE_URL for pgvector. Startup is best-effort:
+            # if the pgvector extension or embeddings quota isn't available the
+            # consumer logs and runs without RAG (persona facts still answer),
+            # so enabling this before the pgvector rollout finishes is safe.
+            - name: RAG_ENABLED
+              value: "true"
+            - name: EMBED_MODEL
+              value: gemini-embedding-001
+            - name: EMBED_DIM
+              value: "768"
+            - name: RAG_TOP_K
+              value: "4"
+            - name: RAG_MAX_DISTANCE
+              value: "0.65"
           resources:
             limits:
               cpu: 300m
