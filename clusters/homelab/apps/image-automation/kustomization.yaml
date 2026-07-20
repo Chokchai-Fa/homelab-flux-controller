@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - portfolio-web
+  - portfolio-chat-gateway
   - docs
   - line-webhook
   - consumer-llm-processor

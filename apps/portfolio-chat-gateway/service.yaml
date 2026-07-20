@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: portfolio-chat-gateway
+  namespace: default
+  labels:
+    app: portfolio-chat-gateway
+spec:
+  # ClusterIP only: the sole caller is portfolio-web's /api/chat proxy, so
+  # the gateway is never exposed through the cloudflared tunnel.
+  type: ClusterIP
+  selector:
+    app: portfolio-chat-gateway
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8081
+      targetPort: 8081
