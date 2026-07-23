@@ -18,7 +18,13 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: postgres:15-alpine
+          # pgvector/pgvector is the stock PostgreSQL 15 image plus the
+          # `vector` extension, needed by consumer-llm-processor's RAG store
+          # (CREATE EXTENSION vector). Same PG15 on-disk format as the previous
+          # postgres:15-alpine, so the existing PVC data is reused unchanged;
+          # multi-arch (arm64) for the Pi. Extension is created lazily by the
+          # app and is a no-op until RAG is enabled.
+          image: pgvector/pgvector:pg15
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5432
