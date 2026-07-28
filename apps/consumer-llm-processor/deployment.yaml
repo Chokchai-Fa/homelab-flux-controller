@@ -32,7 +32,7 @@ spec:
             value: "5"
       containers:
         - name: consumer-llm-processor
-          image: chokchaifa/consumer-llm-processor:v1.3.0-52.038d07b # {"$imagepolicy": "flux-system:consumer-llm-processor"}
+          image: chokchaifa/consumer-llm-processor:v1.3.0-55.0d7d31c # {"$imagepolicy": "flux-system:consumer-llm-processor"}
           env:
             - name: NATS_URL
               value: nats://nats.core.svc.cluster.local:4222
