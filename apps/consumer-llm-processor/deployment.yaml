@@ -15,21 +15,12 @@ spec:
       labels:
         app: consumer-llm-processor
     spec:
-      # Cluster DNS (via the node's upstream) intermittently SERVFAILs for
-      # external names; fall back to a public resolver so Gemini API calls
-      # survive the blips. 10.43.0.10 = kube-dns, tried first.
-      dnsPolicy: "None"
-      dnsConfig:
-        nameservers:
-          - 10.43.0.10
-          - 1.1.1.1
-        searches:
-          - default.svc.cluster.local
-          - svc.cluster.local
-          - cluster.local
-        options:
-          - name: ndots
-            value: "5"
+      # Uses default cluster DNS (kube-dns). External names (Gemini/Groq/
+      # OpenRouter) resolve reliably via CoreDNS per-zone forward rules - see
+      # infrastructure/networking/coredns/configmap-custom.yaml. The per-pod
+      # public resolver (1.1.1.1) was removed: on any kube-dns blip it
+      # NXDOMAIN'd the INTERNAL NATS name and permanently broke NATS
+      # connectivity until a pod restart.
       containers:
         - name: consumer-llm-processor
           image: chokchaifa/consumer-llm-processor:v1.3.0-55.0d7d31c # {"$imagepolicy": "flux-system:consumer-llm-processor"}

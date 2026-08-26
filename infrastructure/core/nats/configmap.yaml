@@ -7,6 +7,7 @@ data:
   nats-server.conf: |
     port: 4222
     http_port: 8222
+    server_name: nats-core
 
     # $NATS_USER / $NATS_PASSWORD are expanded from the nats-auth Secret,
     # which is created directly in-cluster and NOT committed to git - same
@@ -15,4 +16,17 @@ data:
     authorization {
       user: $NATS_USER
       password: $NATS_PASSWORD
+    }
+
+    # JetStream, MEMORY-only. store_dir points at a tmpfs (RAM) emptyDir and
+    # max_file_store is 0, so nothing is ever written to the Pi's SD card -
+    # same disk profile as before. Streams are created with MemoryStorage by
+    # the services; this gives at-least-once delivery that survives consumer
+    # restarts/redeploys. Trade-off: a restart of THIS NATS pod loses in-flight
+    # messages (RAM/tmpfs is wiped) - acceptable for the chat pipeline, and the
+    # reminder firing path is Postgres-backed independently.
+    jetstream {
+      store_dir: "/data"
+      max_memory_store: 67108864   # 64 MiB cap for all memory streams
+      max_file_store: 0            # disallow file storage entirely
     }

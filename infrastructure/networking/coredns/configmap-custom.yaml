@@ -16,3 +16,21 @@ data:
       name exact s3.chokchai-dev.xyz minio.core.svc.cluster.local
       answer auto
     }
+  # Resolve the external API hostnames the in-cluster services call by
+  # forwarding just those zones to public resolvers, bypassing the node's
+  # upstream resolver that intermittently SERVFAILs. This replaces the old
+  # per-pod 1.1.1.1 fallback on consumer-llm-processor / consumer-reply-line-user
+  # (which broke INTERNAL NATS resolution on any kube-dns blip). Only these
+  # specific external zones are affected; internal *.svc.cluster.local and every
+  # other name keep using the default resolution path. `.server` files are
+  # imported by k3s CoreDNS as standalone server blocks.
+  external-apis.server: |
+    generativelanguage.googleapis.com api.groq.com openrouter.ai api.cloudflare.com api.line.me api-data.line.me {
+      forward . 1.1.1.1 8.8.8.8 {
+        policy sequential
+      }
+      cache 30
+      loop
+      log
+      errors
+    }

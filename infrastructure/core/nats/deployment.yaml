@@ -18,8 +18,9 @@ spec:
       containers:
         - name: nats
           image: nats:2.10-alpine
-          # Core NATS only - no JetStream/-js flag, so pub/sub state lives in
-          # memory and is never written to disk. No PVC on purpose.
+          # JetStream enabled but MEMORY-only: store_dir is a tmpfs emptyDir
+          # (js-store below) and max_file_store is 0 in the config, so nothing
+          # touches the SD card. No PVC on purpose.
           args:
             - "-c"
             - "/etc/nats/nats-server.conf"
@@ -46,13 +47,23 @@ spec:
             - name: config
               mountPath: /etc/nats/nats-server.conf
               subPath: nats-server.conf
+            - name: js-store
+              mountPath: /data
           resources:
             requests:
               cpu: 50m
-              memory: 64Mi
+              memory: 96Mi
+            # Bumped from 256Mi for JetStream's 64 MiB memory store + the
+            # tmpfs js-store + server overhead.
             limits:
-              memory: 256Mi
+              memory: 384Mi
       volumes:
         - name: config
           configMap:
             name: nats-config
+        # RAM-backed JetStream store so nothing is written to the SD card.
+        # Wiped on pod restart (same as the previous in-memory pub/sub state).
+        - name: js-store
+          emptyDir:
+            medium: Memory
+            sizeLimit: 96Mi
