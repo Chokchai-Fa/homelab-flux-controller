@@ -23,7 +23,7 @@ spec:
       # connectivity until a pod restart.
       containers:
         - name: consumer-llm-processor
-          image: chokchaifa/consumer-llm-processor:v1.4.0-63.5a79e04 # {"$imagepolicy": "flux-system:consumer-llm-processor"}
+          image: chokchaifa/consumer-llm-processor:v1.4.0-64.8c4c6ea # {"$imagepolicy": "flux-system:consumer-llm-processor"}
           env:
             - name: NATS_URL
               value: nats://nats.core.svc.cluster.local:4222
