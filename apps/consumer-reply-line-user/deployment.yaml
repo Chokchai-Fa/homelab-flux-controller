@@ -23,7 +23,7 @@ spec:
       # connectivity until a pod restart.
       containers:
         - name: consumer-reply-line-user
-          image: chokchaifa/consumer-reply-line-user:v1.1.0-60.2426daf # {"$imagepolicy": "flux-system:consumer-reply-line-user"}
+          image: chokchaifa/consumer-reply-line-user:v1.1.0-63.5a79e04 # {"$imagepolicy": "flux-system:consumer-reply-line-user"}
           env:
             - name: NATS_URL
               value: nats://nats.core.svc.cluster.local:4222
