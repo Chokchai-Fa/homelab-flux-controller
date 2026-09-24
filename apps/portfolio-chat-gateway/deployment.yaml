@@ -19,7 +19,7 @@ spec:
         - name: portfolio-chat-gateway
           # First tag is a placeholder; Flux image automation rewrites it as
           # soon as CI pushes the first real build.
-          image: chokchaifa/portfolio-chat-gateway:v1.2.0-60.2426daf # {"$imagepolicy": "flux-system:portfolio-chat-gateway"}
+          image: chokchaifa/portfolio-chat-gateway:v1.2.0-64.8c4c6ea # {"$imagepolicy": "flux-system:portfolio-chat-gateway"}
           ports:
             - containerPort: 8081
               name: http
