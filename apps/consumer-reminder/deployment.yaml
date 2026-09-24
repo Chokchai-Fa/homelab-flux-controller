@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: consumer-reminder
-          image: chokchaifa/consumer-reminder:v1.2.0-64.8c4c6ea # {"$imagepolicy": "flux-system:consumer-reminder"}
+          image: chokchaifa/consumer-reminder:v1.2.0-65.32bc522 # {"$imagepolicy": "flux-system:consumer-reminder"}
           env:
             - name: NATS_URL
               value: nats://nats.core.svc.cluster.local:4222
