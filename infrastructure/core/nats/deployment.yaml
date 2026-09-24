@@ -49,6 +49,27 @@ spec:
               subPath: nats-server.conf
             - name: js-store
               mountPath: /data
+          # NATS's built-in /healthz (js-enabled-only checks JetStream, not
+          # just the TCP port) - added after an incident where a client
+          # subscribe silently left a JetStream consumer uncreated on the
+          # server during a burst of concurrent client redeploys. These
+          # probes don't catch that client-side race directly, but they do
+          # give Kubernetes a way to restart this pod if JetStream itself
+          # ever degrades or wedges, rather than leaving a half-broken
+          # broker serving traffic on a healthy-looking TCP port.
+          readinessProbe:
+            httpGet:
+              path: /healthz?js-enabled-only=true
+              port: 8222
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz?js-enabled-only=true
+              port: 8222
+            initialDelaySeconds: 15
+            periodSeconds: 15
+            failureThreshold: 3
           resources:
             requests:
               cpu: 50m
